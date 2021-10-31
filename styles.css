@@ -25,7 +25,7 @@ body, .quote-input {
 
 .timer{
     position: absolute;
-    top: 2rem;
+    top: 10rem;
     font-size: 3rem;
     color:#57606f;
     
@@ -33,10 +33,26 @@ body, .quote-input {
 
 .quote-display{
     margin-bottom: 1rem;
+    margin-left: calc(1rem + 1px);
+    margin-right: calc(1rem + 1px);
 }
 
 .quote-input{
     background-color: transparent;
-    border: 0px;
+    border: 1px solid #2f3542;
+    border-radius: .2rem;
     outline: none;
+    width: 100%;
+    resize: none;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    
 }
+
+.correct {
+    color: #747d8c;
+  }
+  
+  .incorrect {
+    color: red;
+  }
