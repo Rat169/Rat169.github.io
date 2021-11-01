@@ -1,33 +1,60 @@
 const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random';
-const quoteDisplayElement = document.getElementById('quoteDisplay')
-const quoteInputElement = document.getElementById('quoteInput')
+
 const timerElement = document.getElementById('timer')
 
-quoteInputElement.addEventListener('input', () => {
-    const arrayQuote = quoteDisplayElement.querySelectorAll('span')
-    const arrayValue = quoteInputElement.value.split('')
+const typingDiv = document.getElementById("typing");
+const statsDiv = document.getElementById("stats");
+const startBtn = document.getElementById("start-game")
+let startTime = null
+let time = null
 
-    let correct = true
+async function startGame() {
+    startTime = null
+    timer.innerText = '0'
+    startBtn.classList.add("hidden")
+    typingDiv.innerHTML = ""
+    statsDiv.innerHTML = ""
 
-    arrayQuote.forEach((characterSpan, index) => {
-        const character = arrayValue[index]
-        if(character == null){
-            characterSpan.classList.remove('correct')
-            characterSpan.classList.remove('incorrect')
-            correct = false
-        }else if (character === characterSpan.innerText){
-            characterSpan.classList.add('correct')
-            characterSpan.classList.remove('incorrect')
-        }else {
-            characterSpan.classList.add('incorrect')
-            characterSpan.classList.remove('correct')
-            correct = false
+    const text = await getRandomQuote()
+
+    const characters = text.split("").map((char) => {
+        const span = document.createElement("span")
+        span.innerText = char
+        typingDiv.appendChild(span)
+        return span
+    });
+
+    let cursorIndex =0;
+    let cursorCharacter = characters[cursorIndex]
+    cursorCharacter.classList.add("cursor")
+
+    const keydown = ({ key }) => {
+        if (startTime === null) {
+            startTime = new Date();
+            startTimer()
         }
-    })
-    if(correct){
-        renderNewQuote()
+        if(key === cursorCharacter.innerText){
+            cursorCharacter.classList.remove("cursor");
+            cursorCharacter.classList.add("done");
+            cursorCharacter = characters[++cursorIndex];
+        }
+        if (cursorIndex >= characters.length) {
+            // game ended
+            clearInterval(time);
+            const seconds = getTimerTime();
+            const numberOfWords = text.split(" ").length;
+            const wps = numberOfWords / seconds;
+            const wpm = wps * 60.0;
+            document.getElementById("stats").innerText = `wpm = ${parseInt(wpm)}`;
+            document.removeEventListener("keydown", keydown);
+            startBtn.classList.remove("hidden");
+            return;
+          }
+      
+          cursorCharacter.classList.add("cursor");
     }
-})
+    document.addEventListener("keydown", keydown);
+}
 
 function getRandomQuote() {
     return fetch(RANDOM_QUOTE_API_URL)
@@ -35,23 +62,11 @@ function getRandomQuote() {
       .then(data => data.content)
   }
 
-async function renderNewQuote(){
-    const quote = await getRandomQuote()
-    quoteDisplayElement.innerHTML = ''
-    quote.split('').forEach(character => {
-        const characterSpan = document.createElement('span')
-        characterSpan.innerText = character
-        quoteDisplayElement.appendChild(characterSpan)
-      })
-    quoteInputElement.value = null
-    startTimer()
-}
 
-let startTime
+
 function startTimer(){
     timerElement.innerText = 0
-    startTime = new Date()
-    setInterval(()=>{
+    time = setInterval(()=>{
         timer.innerText = getTimerTime()
     },1000)
 }
@@ -60,4 +75,5 @@ function getTimerTime(){
     return Math.floor((new Date() - startTime)/1000)
 }
 
-renderNewQuote()
+
+

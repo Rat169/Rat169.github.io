@@ -1,58 +1,71 @@
-* {
-box-sizing: border-box;
-}
-
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    text-align: center;
     background-color: #2f3542;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-body, .quote-input {
+
+body {
     font-family: 'Orbitron', sans-serif;
-}
-
-.container {
-    background-color: #57606f;
-    padding: 1rem;
-    border-radius: .2rem;
-    width: 700px;
-    max-width: 90%;
 }
 
 .timer{
     position: absolute;
     top: 10rem;
     font-size: 3rem;
-    color:#57606f;
+    color:#747d8c;
     
 }
 
-.quote-display{
-    margin-bottom: 1rem;
-    margin-left: calc(1rem + 1px);
-    margin-right: calc(1rem + 1px);
+.start-game{
+    position: absolute;
+    top: 35rem;
+    background-color: #57606f;
+    border: none;
+    color: #2f3542;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Orbitron', sans-serif;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
-.quote-input{
-    background-color: transparent;
-    border: 1px solid #2f3542;
-    border-radius: .2rem;
-    outline: none;
-    width: 100%;
-    resize: none;
-    padding: .5rem 1rem;
-    font-size: 1rem;
-    
+.cursor {
+    background-color: #dfe4ea;
 }
 
-.correct {
-    color: #747d8c;
+.done {
+    color: #57606f;
+  }
+
+
+#typing {
+    position: absolute;
+    margin: 0 auto; 
+    width: 700px;
+    color:#747d8c;
   }
   
-  .incorrect {
-    color: red;
-  }
+#stats {
+    position: absolute;
+    top: 25rem;
+    margin: 0 auto; 
+    width: 700px;
+    color:#747d8c;
+}
+.hidden {
+    display: none;
+}
