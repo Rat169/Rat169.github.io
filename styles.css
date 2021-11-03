@@ -58,7 +58,7 @@ body {
     cursor: pointer;
 }
 .cursor {
-    background-color: #dfe4ea;
+    border-left: thin solid #57606f;
 }
 
 .done {
@@ -74,6 +74,7 @@ body {
     margin: 0 auto; 
     width: 700px;
     color:#747d8c;
+    border-left: thin solid #2f3542;
   }
   
 #stats {

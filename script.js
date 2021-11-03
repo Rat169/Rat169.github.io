@@ -1,5 +1,4 @@
 const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random'
-const PARAGRAPH_API_URL = 'http://metaphorpsum.com/paragraphs/2'
 
 const timerElement = document.getElementById('timer')
 
@@ -23,6 +22,7 @@ async function startGame() {
     startBtn.classList.add("hidden")
     typingDiv.innerHTML = ""
     statsDiv.innerHTML = ""
+    changeCursorColor()
 
     let text = await getRandomQuote()
     const characters = text.split("").map((char) => {
@@ -51,7 +51,8 @@ async function startGame() {
             cursorCharacter.classList.add("done")
             cursorCharacter = characters[++cursorIndex]
         }else{
-            characters[cursorIndex] = (key)
+            cursorCharacter.classList.remove("cursor")
+            characters[cursorIndex].classList.add("error")
         }
         if (cursorIndex >= characters.length) {
             // game ended
@@ -109,3 +110,15 @@ function switchMode(){
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
+
+function changeCursorColor(){
+    setInterval(()=>{
+        var x = document.getElementsByClassName('cursor');
+        console.log(x)
+        if (x[0].style.borderLeftColor != "rgb(255, 255, 255)")
+          x[0].style.borderLeftColor = "#FFFFFF";
+        else {
+          x[0].style.borderLeftColor = "#627CA9"; // forecolor
+        }
+    },200)
+}
