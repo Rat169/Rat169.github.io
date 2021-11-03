@@ -48,6 +48,7 @@ async function startGame() {
         console.log('Inner Text: '+ cursorCharacter.innerText.charCodeAt(0))
         if(key === cursorCharacter.innerText){
             cursorCharacter.classList.remove("cursor")
+            cursorCharacter.classList.remove("error")
             cursorCharacter.classList.add("done")
             cursorCharacter = characters[++cursorIndex]
         }else{
@@ -115,10 +116,10 @@ function changeCursorColor(){
     setInterval(()=>{
         var x = document.getElementsByClassName('cursor');
         console.log(x)
-        if (x[0].style.borderLeftColor != "rgb(255, 255, 255)")
-          x[0].style.borderLeftColor = "#FFFFFF";
+        if (x[0].style.borderLeftColor != "rgb(116, 125, 140)")
+          x[0].style.borderLeftColor = "#747d8c";
         else {
-          x[0].style.borderLeftColor = "#627CA9"; // forecolor
+          x[0].style.borderLeftColor = "#2f3542"; // forecolor
         }
     },200)
 }
