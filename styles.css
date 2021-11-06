@@ -58,7 +58,7 @@ body {
     cursor: pointer;
 }
 .cursor {
-    border-color: #57606f;
+    border-left: thin solid  #57606f;
 }
 
 .done {
