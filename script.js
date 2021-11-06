@@ -22,40 +22,111 @@ async function startGame() {
     startBtn.classList.add("hidden")
     typingDiv.innerHTML = ""
     statsDiv.innerHTML = ""
-    changeCursorColor()
+    //changeCursorColor()
 
     let text = await getRandomQuote()
-    const characters = text.split("").map((char) => {
-        const span = document.createElement("span")
-        if(char.charCodeAt(0) === 8217){
-            char = '\''
-        }
-        span.innerText = char
-        typingDiv.appendChild(span)
-        return span
-    });
+
+    let completed_words_span = document.createElement("span")
+    typingDiv.appendChild(completed_words_span)
+
+    let completed_char_span = document.createElement("span")
+    typingDiv.appendChild(completed_char_span)
+
+    let current_char_span = document.createElement("span")
+    typingDiv.appendChild(current_char_span)
+
+    let uncompleted_char_span = document.createElement("span")
+    typingDiv.appendChild(uncompleted_char_span)
+
+    let uncompleted_words_span = document.createElement("span")
+    typingDiv.appendChild(uncompleted_words_span)
+
+    let completed_words;
+    let completed_char = [];
+    let current_char;
+    let uncompleted_char;
+    let uncompleted_words = text.split(" ")
+    for(let i = 1; i<uncompleted_words.length;i++){
+        uncompleted_words[i]= ' ' + uncompleted_words[i]
+    }
+    console.log(uncompleted_words)
+
+    let current_index = 0
+    uncompleted_char = uncompleted_words[0].split("")
+    uncompleted_words.shift()
+    current_char = uncompleted_char[current_index]
+    uncompleted_char.shift()
+    console.log(uncompleted_words)
+
+
+    let blit =''
+    for (let i = 0; i < uncompleted_words.length; i++) {
+        blit += ' ' + uncompleted_words[i]
+    }
+    uncompleted_words_span.innerText =blit
+
+    blit = ''
+    for (let i = 0; i < uncompleted_char.length; i++) {
+        blit += uncompleted_char[i]
+    }
+
+    uncompleted_char_span.innerText = blit
+
+    current_char_span.innerText = current_char
 
     let cursorIndex = 0;
-    let cursorCharacter = characters[cursorIndex]
+    let cursorCharacter = current_char_span
     cursorCharacter.classList.add("cursor")
-
+    completed_char_span.classList.add("done")
     const keydown = ({ key }) => {
         console.log(key)
         if (startTime === null) {
             startTime = new Date()
             startTimer()
         }
-        console.log('Inner Text: '+ cursorCharacter.innerText.charCodeAt(0))
-        if(key === cursorCharacter.innerText){
-            cursorCharacter.classList.remove("cursor")
-            cursorCharacter.classList.remove("error")
-            cursorCharacter.classList.add("done")
-            cursorCharacter = characters[++cursorIndex]
+        console.log('Inner Text: '+ key.charCodeAt(0))
+        if(key === current_char){
+            completed_char.push(current_char)
+            if(typeof uncompleted_char[0] !== 'undefined'){
+                current_char = uncompleted_char[0]
+                uncompleted_char.shift()
+            }else{
+                current_char = ''
+            }
+            if(uncompleted_char.length === 0){
+                if(uncompleted_words[0] !== 'undefined'){
+                uncompleted_char = uncompleted_words[0].split("")
+                uncompleted_words.shift()
+                }
+            }
+            current_char_span.classList.remove("error")
         }else{
-            cursorCharacter.classList.remove("cursor")
-            characters[cursorIndex].classList.add("error")
+            current_char_span.classList.add("error")
         }
-        if (cursorIndex >= characters.length) {
+
+        let blit =''
+        for (let i = 0; i < completed_char.length; i++) {
+            blit +=  completed_char[i]
+        }
+        completed_char_span.innerText =blit
+
+        blit =''
+        for (let i = 0; i < uncompleted_words.length; i++) {
+            blit += uncompleted_words[i]
+        }
+        uncompleted_words_span.innerText =blit
+
+        blit = ''
+        for (let i = 0; i < uncompleted_char.length; i++) {
+            blit += uncompleted_char[i]
+        }
+        uncompleted_char_span.innerText = blit
+        
+
+        current_char_span.innerText = current_char
+
+
+        if (current_char === '') {
             // game ended
             clearInterval(time);
             const seconds = getTimerTime();
@@ -68,7 +139,7 @@ async function startGame() {
             return
           }
       
-          cursorCharacter.classList.add("cursor")
+          // cursorCharacter.classList.add("cursor")
     }
     document.addEventListener("keydown", keydown)
 }
@@ -123,3 +194,9 @@ function changeCursorColor(){
         }
     },200)
 }
+
+
+
+        // if(char.charCodeAt(0) === 8217){
+        //     char = '\''
+        // }
